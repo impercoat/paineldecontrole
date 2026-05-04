@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)file:///C:/Users/daniel.possi/Downloads/dashboard_impercoat.html -->
-<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Impercoat — Painel Comercial</title>
 
@@ -10,9 +10,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root {
-    --sidebar-bg: #1a7a4a;
-    --sidebar-dark: #145c38;
-    --sidebar-light: #22a860;
+    --sidebar-bg: #1a3a7a;
+    --sidebar-dark: #102a5c;
+    --sidebar-light: #2258c8;
     --sidebar-text: rgba(255,255,255,0.92);
     --sidebar-muted: rgba(255,255,255,0.55);
     --sidebar-hover: rgba(255,255,255,0.12);
@@ -25,9 +25,9 @@
     --text: #1a2332;
     --text2: #64748b;
     --text3: #94a3b8;
-    --green: #1a7a4a;
-    --green-light: #22a860;
-    --green-dim: rgba(26,122,74,0.1);
+    --green: #1a3a7a;
+    --green-light: #2258c8;
+    --green-dim: rgba(26,58,122,0.1);
     --amber: #f59e0b;
     --amber-dim: rgba(245,158,11,0.1);
     --red: #ef4444;
@@ -38,7 +38,7 @@
     --purple-dim: rgba(139,92,246,0.1);
     --teal: #14b8a6;
     --teal-dim: rgba(20,184,166,0.1);
-    --accent: #1a7a4a;
+    --accent: #1a3a7a;
     --font: 'Plus Jakarta Sans', sans-serif;
     --mono: 'JetBrains Mono', monospace;
     --radius: 12px;
@@ -57,7 +57,7 @@
 
   /* SIDEBAR */
   .sidebar {
-    background: linear-gradient(180deg, var(--sidebar-bg) 0%, var(--sidebar-dark) 100%);
+    background: linear-gradient(180deg, #1e4db7 0%, #102a5c 100%);
     display: flex; flex-direction: column;
     position: sticky; top: 0; height: 100vh; overflow-y: auto;
   }
@@ -121,7 +121,7 @@
     border-radius: 6px; font-size: 10px; color: rgba(255,255,255,0.7);
     font-family: var(--mono);
   }
-  .file-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
+  .file-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: #60a5fa; flex-shrink: 0; }
 
   /* MAIN */
   .main { display: flex; flex-direction: column; min-height: 100vh; overflow: hidden; }
@@ -146,7 +146,7 @@
     font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text2);
     font-family: var(--font); transition: all 0.15s;
   }
-  .tab-btn.active { background: var(--green); color: #fff; box-shadow: var(--shadow); }
+  .tab-btn.active { background: #1e4db7; color: #fff; box-shadow: var(--shadow); }
   .tab-btn:hover:not(.active) { color: var(--text); }
 
   /* CONTENT */
@@ -191,6 +191,11 @@
 
   .kpi-label { font-size: 11px; color: var(--text2); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
   .kpi-value { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: var(--text); line-height: 1.1; }
+  .kpi-pct-badge {
+    display: inline-block; background: #1e4db7; color: #fff;
+    font-size: 11px; font-weight: 700; padding: 3px 10px;
+    border-radius: 20px; margin-top: 6px; font-family: var(--mono);
+  }
   .kpi-desc { font-size: 11px; color: var(--text3); margin-top: 5px; font-family: var(--mono); }
   .kpi-badge {
     display: inline-flex; align-items: center; gap: 4px;
@@ -596,7 +601,7 @@
     animation-delay: 0.45s;
   }
 
-  .insight.good { background: rgba(34,201,138,0.06); border-color: var(--green); }
+  .insight.good { background: rgba(30,77,183,0.06); border-color: var(--green); }
   .insight.warn { background: rgba(245,166,35,0.06); border-color: var(--amber); }
   .insight strong { color: var(--text); font-weight: 500; }
 
@@ -842,8 +847,9 @@
           </div>
           <div class="kpi-card">
             <div class="kpi-label">Margem Bruta</div>
-            <div class="kpi-value green" id="kpi-margem">R$ 4,2M</div>
-            <div class="kpi-sub-row"><span class="kpi-desc">sobre receita</span><span class="kpi-badge badge-green">~39%</span></div>
+            <div class="kpi-value" style="color:#1e4db7" id="kpi-margem">R$ 4,2M</div>
+            <div class="kpi-pct-badge" id="kpi-margem-pct">~39%</div>
+            <div class="kpi-sub-row"><span class="kpi-desc">sobre receita total</span></div>
           </div>
           <div class="kpi-card">
             <div class="kpi-label">Orçamentos</div>
@@ -896,7 +902,7 @@
               <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
                 <span class="trend up">↑ Alta em 2026</span>
                 <div class="legend">
-                  <span class="leg"><span class="leg-sq" style="background:#22c98a"></span>Receita</span>
+                  <span class="leg"><span class="leg-sq" style="background:#1e4db7"></span>Receita</span>
                   <span class="leg"><span class="leg-sq" style="background:#2a4060"></span>Custo</span>
                   <span class="leg"><span class="leg-sq" style="background:#f5a623;border-radius:0"></span>Tendência</span>
                 </div>
@@ -915,7 +921,7 @@
               </div>
               <div class="legend">
                 <span class="leg"><span class="leg-sq" style="background:#4d9cf8"></span>Orçamentos</span>
-                <span class="leg"><span class="leg-sq" style="background:#22c98a"></span>Vendas</span>
+                <span class="leg"><span class="leg-sq" style="background:#1e4db7"></span>Vendas</span>
               </div>
             </div>
             <div class="chart-wrap" style="height:200px"><canvas id="cOrcVend" role="img" aria-label="Orçamentos vs vendas por mês" style="box-sizing: border-box; display: block; height: 200px; width: 576px;" width="720" height="250"></canvas></div>
@@ -964,7 +970,7 @@
             <div class="chart-header">
               <div><div class="chart-title">Receita e Margem Mensal</div><div class="chart-subtitle">Valor em R$ — barras empilhadas custo vs. margem</div></div>
               <div class="legend">
-                <span class="leg"><span class="leg-sq" style="background:#22c98a"></span>Margem</span>
+                <span class="leg"><span class="leg-sq" style="background:#1e4db7"></span>Margem</span>
                 <span class="leg"><span class="leg-sq" style="background:#1a3a2a"></span>Custo</span>
               </div>
             </div>
@@ -1052,13 +1058,13 @@
           </div>
           <div class="chart-card">
             <div class="chart-header"><div><div class="chart-title">Origem dos leads</div><div class="chart-subtitle">2024 em diante</div></div></div>
-            <div id="origemList" class="hbar-list"><div class="hbar-row"><span class="hbar-label">Google</span><div class="hbar-track"><div class="hbar-fill" style="width:100%;background:#22c98a"></div></div><span class="hbar-val">417</span></div><div class="hbar-row"><span class="hbar-label">AECWeb</span><div class="hbar-track"><div class="hbar-fill" style="width:91%;background:#9b7ff4"></div></div><span class="hbar-val">379</span></div><div class="hbar-row"><span class="hbar-label">Desconhecido</span><div class="hbar-track"><div class="hbar-fill" style="width:68%;background:#4d9cf8"></div></div><span class="hbar-val">285</span></div><div class="hbar-row"><span class="hbar-label">Google Patroc.</span><div class="hbar-track"><div class="hbar-fill" style="width:25%;background:#f5a623"></div></div><span class="hbar-val">106</span></div><div class="hbar-row"><span class="hbar-label">Construcompras</span><div class="hbar-track"><div class="hbar-fill" style="width:18%;background:#e05353"></div></div><span class="hbar-val">77</span></div><div class="hbar-row"><span class="hbar-label">Google Orgânico</span><div class="hbar-track"><div class="hbar-fill" style="width:11%;background:#5dcaa5"></div></div><span class="hbar-val">47</span></div><div class="hbar-row"><span class="hbar-label">Especificação</span><div class="hbar-track"><div class="hbar-fill" style="width:11%;background:#7f77dd"></div></div><span class="hbar-val">46</span></div><div class="hbar-row"><span class="hbar-label">Indicação</span><div class="hbar-track"><div class="hbar-fill" style="width:6%;background:#fac775"></div></div><span class="hbar-val">24</span></div></div>
+            <div id="origemList" class="hbar-list"><div class="hbar-row"><span class="hbar-label">Google</span><div class="hbar-track"><div class="hbar-fill" style="width:100%;background:#1e4db7"></div></div><span class="hbar-val">417</span></div><div class="hbar-row"><span class="hbar-label">AECWeb</span><div class="hbar-track"><div class="hbar-fill" style="width:91%;background:#9b7ff4"></div></div><span class="hbar-val">379</span></div><div class="hbar-row"><span class="hbar-label">Desconhecido</span><div class="hbar-track"><div class="hbar-fill" style="width:68%;background:#4d9cf8"></div></div><span class="hbar-val">285</span></div><div class="hbar-row"><span class="hbar-label">Google Patroc.</span><div class="hbar-track"><div class="hbar-fill" style="width:25%;background:#f5a623"></div></div><span class="hbar-val">106</span></div><div class="hbar-row"><span class="hbar-label">Construcompras</span><div class="hbar-track"><div class="hbar-fill" style="width:18%;background:#e05353"></div></div><span class="hbar-val">77</span></div><div class="hbar-row"><span class="hbar-label">Google Orgânico</span><div class="hbar-track"><div class="hbar-fill" style="width:11%;background:#5dcaa5"></div></div><span class="hbar-val">47</span></div><div class="hbar-row"><span class="hbar-label">Especificação</span><div class="hbar-track"><div class="hbar-fill" style="width:11%;background:#7f77dd"></div></div><span class="hbar-val">46</span></div><div class="hbar-row"><span class="hbar-label">Indicação</span><div class="hbar-track"><div class="hbar-fill" style="width:6%;background:#fac775"></div></div><span class="hbar-val">24</span></div></div>
           </div>
         </div>
         <div class="charts-row cols-1">
           <div class="chart-card">
             <div class="chart-header"><div><div class="chart-title">Funil de status — pipeline histórico</div><div class="chart-subtitle">Todos os 2.981 leads cadastrados</div></div></div>
-            <div id="funnelList" class="funnel-list" style="margin-top:4px"><div class="funnel-row"><span class="funnel-label">Total leads</span><div class="funnel-bar" style="width:100%;background:#33354020;color:#8a8d96;border:1px solid #33354040">2981</div><span class="funnel-pct">100.0%</span></div><div class="funnel-row"><span class="funnel-label">Contatado</span><div class="funnel-bar" style="width:2%;background:#4d9cf820;color:#4d9cf8;border:1px solid #4d9cf840">26</div><span class="funnel-pct">0.9%</span></div><div class="funnel-row"><span class="funnel-label">Proposta</span><div class="funnel-bar" style="width:2%;background:#9b7ff420;color:#9b7ff4;border:1px solid #9b7ff440">8</div><span class="funnel-pct">0.3%</span></div><div class="funnel-row"><span class="funnel-label">Vendido</span><div class="funnel-bar" style="width:3%;background:#22c98a20;color:#22c98a;border:1px solid #22c98a40">89</div><span class="funnel-pct">3.0%</span></div><div class="funnel-row"><span class="funnel-label">Sem retorno</span><div class="funnel-bar" style="width:58%;background:#e0535320;color:#e05353;border:1px solid #e0535340">1738</div><span class="funnel-pct">58.3%</span></div><div class="funnel-row"><span class="funnel-label">Declinado</span><div class="funnel-bar" style="width:27%;background:#f5a62320;color:#f5a623;border:1px solid #f5a62340">818</div><span class="funnel-pct">27.4%</span></div><div class="funnel-row"><span class="funnel-label">Outro produto</span><div class="funnel-bar" style="width:9%;background:#55586020;color:#8a8d96;border:1px solid #55586040">278</div><span class="funnel-pct">9.3%</span></div><div class="funnel-row"><span class="funnel-label">Cancelado</span><div class="funnel-bar" style="width:2%;background:#2a2c3020;color:#555860;border:1px solid #2a2c3040">22</div><span class="funnel-pct">0.7%</span></div></div>
+            <div id="funnelList" class="funnel-list" style="margin-top:4px"><div class="funnel-row"><span class="funnel-label">Total leads</span><div class="funnel-bar" style="width:100%;background:#33354020;color:#8a8d96;border:1px solid #33354040">2981</div><span class="funnel-pct">100.0%</span></div><div class="funnel-row"><span class="funnel-label">Contatado</span><div class="funnel-bar" style="width:2%;background:#4d9cf820;color:#4d9cf8;border:1px solid #4d9cf840">26</div><span class="funnel-pct">0.9%</span></div><div class="funnel-row"><span class="funnel-label">Proposta</span><div class="funnel-bar" style="width:2%;background:#9b7ff420;color:#9b7ff4;border:1px solid #9b7ff440">8</div><span class="funnel-pct">0.3%</span></div><div class="funnel-row"><span class="funnel-label">Vendido</span><div class="funnel-bar" style="width:3%;background:#1e4db720;color:#1e4db7;border:1px solid #1e4db740">89</div><span class="funnel-pct">3.0%</span></div><div class="funnel-row"><span class="funnel-label">Sem retorno</span><div class="funnel-bar" style="width:58%;background:#e0535320;color:#e05353;border:1px solid #e0535340">1738</div><span class="funnel-pct">58.3%</span></div><div class="funnel-row"><span class="funnel-label">Declinado</span><div class="funnel-bar" style="width:27%;background:#f5a62320;color:#f5a623;border:1px solid #f5a62340">818</div><span class="funnel-pct">27.4%</span></div><div class="funnel-row"><span class="funnel-label">Outro produto</span><div class="funnel-bar" style="width:9%;background:#55586020;color:#8a8d96;border:1px solid #55586040">278</div><span class="funnel-pct">9.3%</span></div><div class="funnel-row"><span class="funnel-label">Cancelado</span><div class="funnel-bar" style="width:2%;background:#2a2c3020;color:#555860;border:1px solid #2a2c3040">22</div><span class="funnel-pct">0.7%</span></div></div>
           </div>
         </div>
       </div>
@@ -1079,7 +1085,7 @@
             <div class="chart-header">
               <div><div class="chart-title">Evolução acumulada de receita (R$)</div><div class="chart-subtitle">Linha de tendência linear + curva real</div></div>
               <div class="legend">
-                <span class="leg"><span class="leg-sq" style="background:#22c98a"></span>Receita acumulada</span>
+                <span class="leg"><span class="leg-sq" style="background:#1e4db7"></span>Receita acumulada</span>
                 <span class="leg"><span class="leg-sq" style="background:#f5a623;border-radius:0"></span>Tendência linear</span>
               </div>
             </div>
@@ -1204,6 +1210,29 @@ async function loadFromSupabase() {
 
     chartsBuilt = {};
     showToast('Dados carregados!');
+
+    // Atualizar KPIs principais
+    const recTotal = _vendas.reduce((a,v)=>a+(+v.receita||0),0);
+    const cusTotal = _vendas.reduce((a,v)=>a+(+v.custo||0),0);
+    const margTotal = recTotal - cusTotal;
+    const margPct = recTotal>0 ? Math.round(margTotal/recTotal*100) : 0;
+    const totalVendas = _vendas.length;
+    const ticket = totalVendas>0 ? Math.round(recTotal/totalVendas) : 0;
+    const orcConc = _orcamentos.filter(o=>o.status==='concretizado').length;
+    const convRate = _orcamentos.length>0 ? (orcConc/_orcamentos.length*100).toFixed(1) : 0;
+    const orcAberto = _orcamentos.filter(o=>o.status==='em_aberto').length;
+    const orcAbertoVal = _orcamentos.filter(o=>o.status==='em_aberto').reduce((a,o)=>a+(+o.valor||0),0);
+
+    const el = id => document.getElementById(id);
+    if(el('kpi-receita'))   el('kpi-receita').textContent   = fmt(recTotal);
+    if(el('kpi-margem'))    el('kpi-margem').textContent    = fmt(margTotal);
+    if(el('kpi-margem-pct')) el('kpi-margem-pct').textContent = margPct + '% margem';
+    if(el('kpi-orc'))       el('kpi-orc').textContent       = _orcamentos.length;
+    if(el('kpi-conv'))      el('kpi-conv').textContent      = convRate + '%';
+    if(el('kpi-ticket'))    el('kpi-ticket').textContent    = fmt(ticket);
+    if(el('kpi-aberto'))    el('kpi-aberto').textContent    = orcAberto;
+    if(el('kpi-leads'))     el('kpi-leads').textContent     = _pipeline.length.toLocaleString('pt-BR');
+
     switchView(currentView);
   } catch(e) {
     showToast('Erro: ' + e.message);
@@ -1299,7 +1328,7 @@ function buildOverviewCharts() {
     data: {
       labels: m,
       datasets: [
-        { label: 'Receita', data: r, backgroundColor: '#22c98a', borderRadius: 3, borderSkipped: false },
+        { label: 'Receita', data: r, backgroundColor: '#1e4db7', borderRadius: 3, borderSkipped: false },
         { label: 'Custo', data: c, backgroundColor: '#1a3540', borderRadius: 3, borderSkipped: false },
         { label: 'Tendência', data: ma, type: 'line', borderColor: '#f5a623', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.4, borderDash: [4,3] }
       ]
@@ -1314,7 +1343,7 @@ function buildOverviewCharts() {
     type: 'bar',
     data: { labels: m, datasets: [
       { label: 'Orçamentos', data: oq, backgroundColor: '#1a3a60', borderRadius: 3 },
-      { label: 'Vendas', data: vq, backgroundColor: '#22c98a', borderRadius: 3 }
+      { label: 'Vendas', data: vq, backgroundColor: '#1e4db7', borderRadius: 3 }
     ]},
     options: { ...chartDefaults,
       scales: { x: xAxisStyle(), y: axisStyle() }
@@ -1346,7 +1375,7 @@ function buildVendasCharts() {
     type: 'bar',
     data: { labels: m, datasets: [
       { label: 'Custo', data: c, backgroundColor: '#1a3a2a', borderRadius: 0, stack: 's' },
-      { label: 'Margem', data: mg, backgroundColor: '#22c98a', borderRadius: 3, stack: 's' }
+      { label: 'Margem', data: mg, backgroundColor: '#1e4db7', borderRadius: 3, stack: 's' }
     ]},
     options: { ...chartDefaults,
       plugins: { legend:{display:false}, tooltip:{callbacks:{label: ctx => ' ' + fmt(ctx.parsed.y)}} },
@@ -1356,13 +1385,13 @@ function buildVendasCharts() {
 
   buildChart('cVendasQty', {
     type: 'bar',
-    data: { labels: m, datasets: [{ label: 'Vendas', data: vq, backgroundColor: '#22c98a', borderRadius: 3 }]},
+    data: { labels: m, datasets: [{ label: 'Vendas', data: vq, backgroundColor: '#1e4db7', borderRadius: 3 }]},
     options: { ...chartDefaults, scales: { x: xAxisStyle(), y: axisStyle() } }
   });
 
   buildChart('cMargemPct', {
     type: 'line',
-    data: { labels: m, datasets: [{ data: mp, borderColor: '#22c98a', backgroundColor: 'rgba(34,201,138,0.08)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4 }]},
+    data: { labels: m, datasets: [{ data: mp, borderColor: '#1e4db7', backgroundColor: 'rgba(30,77,183,0.08)', borderWidth: 2, pointRadius: 2, fill: true, tension: 0.4 }]},
     options: { ...chartDefaults,
       plugins: { legend:{display:false}, tooltip:{callbacks:{label: ctx => ' ' + ctx.parsed.y.toFixed(1)+'%'}} },
       scales: { x: xAxisStyle(), y: { ...axisStyle(), min:0, max:100, ticks:{...axisStyle().ticks, callback:v=>v+'%'} } }
@@ -1385,7 +1414,7 @@ function buildOrcamentosCharts() {
     type: 'doughnut',
     data: {
       labels: ['Concretizado','Declinado','Cancelado','Em aberto','Outros'],
-      datasets: [{ data: [372,181,131,65,60], backgroundColor: ['#22c98a','#e05353','#555860','#f5a623','#4d9cf8'], borderWidth: 0, hoverOffset: 4 }]
+      datasets: [{ data: [372,181,131,65,60], backgroundColor: ['#1e4db7','#e05353','#555860','#f5a623','#4d9cf8'], borderWidth: 0, hoverOffset: 4 }]
     },
     options: { responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: true, position: 'bottom', labels: { color: '#8a8d96', font: { size: 11, family: "'DM Sans'" }, padding: 12, boxWidth: 10, boxHeight: 10 } } }
@@ -1414,7 +1443,7 @@ function buildPipelineCharts() {
     { label: 'Especificação', count: 46 },
     { label: 'Indicação', count: 24 }
   ];
-  const colors = ['#22c98a','#9b7ff4','#4d9cf8','#f5a623','#e05353','#5dcaa5','#7f77dd','#fac775'];
+  const colors = ['#1e4db7','#9b7ff4','#4d9cf8','#f5a623','#e05353','#5dcaa5','#7f77dd','#fac775'];
   const origemEl = document.getElementById('origemList');
   if (origemEl && !origemEl.children.length) {
     origemData.forEach((d, i) => {
@@ -1427,7 +1456,7 @@ function buildPipelineCharts() {
     { label: 'Total leads', count: 2981, max: 2981, color: '#333540', textColor: '#8a8d96' },
     { label: 'Contatado', count: 26, max: 2981, color: '#4d9cf8', textColor: '#4d9cf8' },
     { label: 'Proposta', count: 8, max: 2981, color: '#9b7ff4', textColor: '#9b7ff4' },
-    { label: 'Vendido', count: 89, max: 2981, color: '#22c98a', textColor: '#22c98a' },
+    { label: 'Vendido', count: 89, max: 2981, color: '#1e4db7', textColor: '#1e4db7' },
     { label: 'Sem retorno', count: 1738, max: 2981, color: '#e05353', textColor: '#e05353' },
     { label: 'Declinado', count: 818, max: 2981, color: '#f5a623', textColor: '#f5a623' },
     { label: 'Outro produto', count: 278, max: 2981, color: '#555860', textColor: '#8a8d96' },
@@ -1454,7 +1483,7 @@ function buildTendenciasCharts() {
   buildChart('cAcumulado', {
     type: 'line',
     data: { labels: m, datasets: [
-      { label: 'Acumulado', data: cumR, borderColor: '#22c98a', backgroundColor: 'rgba(34,201,138,0.07)', borderWidth: 2.5, pointRadius: 2, fill: true, tension: 0.3 },
+      { label: 'Acumulado', data: cumR, borderColor: '#1e4db7', backgroundColor: 'rgba(30,77,183,0.07)', borderWidth: 2.5, pointRadius: 2, fill: true, tension: 0.3 },
       { label: 'Tendência', data: trend, borderColor: '#f5a623', borderWidth: 1.5, pointRadius: 0, fill: false, tension: 0, borderDash: [5,4] }
     ]},
     options: { ...chartDefaults,
@@ -1476,7 +1505,7 @@ function buildTendenciasCharts() {
     type: 'bar',
     data: { labels: m, datasets: [
       { label: 'Leads', data: l, backgroundColor: '#9b7ff440', borderRadius: 2 },
-      { label: 'Vendas', data: vq, backgroundColor: '#22c98a', borderRadius: 2 }
+      { label: 'Vendas', data: vq, backgroundColor: '#1e4db7', borderRadius: 2 }
     ]},
     options: { ...chartDefaults, scales: { x: xAxisStyle(), y: axisStyle() } }
   });
@@ -1498,7 +1527,7 @@ function buildClientesCharts() {
     { label: 'Metr. Tower', val: 210830 },
     { label: 'Ig. Esplanada', val: 198935 }
   ];
-  const colors = ['#22c98a','#9b7ff4','#4d9cf8','#f5a623','#e05353','#5dcaa5','#7f77dd','#fac775','#378add','#1d9e75'];
+  const colors = ['#1e4db7','#9b7ff4','#4d9cf8','#f5a623','#e05353','#5dcaa5','#7f77dd','#fac775','#378add','#1d9e75'];
   const totalVendas = 10890030;
 
   const listEl = document.getElementById('clienteList');
