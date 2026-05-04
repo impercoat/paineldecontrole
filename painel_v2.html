@@ -835,22 +835,78 @@ function buildOverviewCharts() {
   chartsBuilt.overview = true;
 
   const m = sliceM(); const r = slice(RECEITA); const c = slice(CUSTO);
+  const mg = slice(MARGEM); const mp = slice(MARG_PCT);
   const ma = slice(movAvg(RECEITA,3)); const oq = slice(ORC_QTY); const vq = slice(VEND_QTY);
-  const conv = slice(CONV); const mp = slice(MARG_PCT);
+  const conv = slice(CONV);
 
   buildChart('cReceita', {
     type: 'bar',
     data: {
       labels: m,
       datasets: [
-        { label: 'Receita', data: r, backgroundColor: '#1e4db7', borderRadius: 3, borderSkipped: false },
-        { label: 'Custo', data: c, backgroundColor: '#1a3540', borderRadius: 3, borderSkipped: false },
-        { label: 'Tendência', data: ma, type: 'line', borderColor: '#f5a623', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.4, borderDash: [4,3] }
+        {
+          label: 'Receita',
+          data: r,
+          backgroundColor: '#1e4db7',
+          borderRadius: 3,
+          borderSkipped: false,
+          order: 2
+        },
+        {
+          label: 'Custo',
+          data: c,
+          backgroundColor: '#94a3b8',
+          borderRadius: 3,
+          borderSkipped: false,
+          order: 3
+        },
+        {
+          label: 'Margem %',
+          data: mp,
+          type: 'line',
+          borderColor: '#22c55e',
+          backgroundColor: 'rgba(34,197,94,0.08)',
+          borderWidth: 2.5,
+          pointRadius: 3,
+          pointBackgroundColor: '#22c55e',
+          fill: false,
+          tension: 0.3,
+          yAxisID: 'yMarg',
+          order: 1
+        }
       ]
     },
-    options: { ...chartDefaults,
-      plugins: { legend:{display:false}, tooltip:{callbacks:{label: ctx => ' ' + fmt(ctx.parsed.y)}} },
-      scales: { x: xAxisStyle(), y: { ...axisStyle(), ticks: { ...axisStyle().ticks, callback: v => fmt(v) } } }
+    options: {
+      ...chartDefaults,
+      plugins: {
+        legend: { display: true, position: 'top', align: 'end', labels: { color: '#64748b', font: { size: 10, family: "'Plus Jakarta Sans'" }, boxWidth: 10, boxHeight: 10, padding: 12 }},
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              if (ctx.dataset.label === 'Custo') {
+                const rec = ctx.chart.data.datasets[0].data[ctx.dataIndex] || 1;
+                const pct = ((ctx.parsed.y / rec) * 100).toFixed(1);
+                return ` Custo: ${fmt(ctx.parsed.y)} (${pct}% da receita)`;
+              }
+              if (ctx.dataset.label === 'Margem %') {
+                return ` Margem: ${ctx.parsed.y.toFixed(1)}%`;
+              }
+              return ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: xAxisStyle(),
+        y: { ...axisStyle(), ticks: { ...axisStyle().ticks, callback: v => fmt(v) } },
+        yMarg: {
+          position: 'right',
+          grid: { display: false },
+          min: 0, max: 100,
+          ticks: { color: '#22c55e', font: { size: 9, family: "'Plus Jakarta Sans'" }, callback: v => v + '%' },
+          border: { color: 'transparent' }
+        }
+      }
     }
   });
 
